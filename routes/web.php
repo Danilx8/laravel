@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CommentController;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,6 +23,8 @@ Route::get('/articles/edit/{id}', [ArticleController::class, 'updatePage']);
 Route::put('/articles/edit/{id}', [ArticleController::class, 'update']);
 Route::get('/articles/delete/{id}', [ArticleController::class, 'deletePage']);
 Route::delete('/articles/delete/{id}', [ArticleController::class, 'delete']);
+
+Route::get('/articles/comments/{id}', [CommentController::class, 'index']);
 
 Route::get('/registration', [AuthController::class, 'create']);
 Route::post('/registration', [AuthController::class, 'registration']);

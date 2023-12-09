@@ -13,6 +13,7 @@
             <small>{{$article->data_create}}</small>
             <a id="edit" href={{"/articles/edit/" . $article->id}}>Edit</a>
             <a id="delete" href={{"/articles/delete/" . $article->id}}>Delete</a>
+            <a id="comments" href={{"/articles/comments/" . $article->id}}>Comments</a>
         </div>
     @endforeach
     {{$articles->links()}}
