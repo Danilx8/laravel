@@ -20,6 +20,7 @@ Route::get('/articles/create', [ArticleController::class, 'createPage']);
 Route::post('/articles/create', [ArticleController::class, 'create']);
 Route::get('/articles/edit/{id}', [ArticleController::class, 'updatePage']);
 Route::put('/articles/edit/{id}', [ArticleController::class, 'update']);
+Route::get('/articles/delete/{id}', [ArticleController::class, 'deletePage']);
 Route::delete('/articles/delete/{id}', [ArticleController::class, 'delete']);
 
 Route::get('/registration', [AuthController::class, 'create']);

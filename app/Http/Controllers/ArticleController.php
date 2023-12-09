@@ -49,9 +49,13 @@ class ArticleController extends Controller
         return redirect('/');
     }
 
-    public function delete($id) {
+    public function deletePage($id) {
+        return view('main.deleteArticle')->with('article', DB::table('articles')->where('id', $id)->first());
+    }
+
+    public function delete(Request $request) {
         DB::table('articles')->delete([
-            'id' => $id
+            'id' => $request->id
         ]);
 
         return redirect('/');
