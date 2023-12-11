@@ -8,6 +8,8 @@ use Illuminate\Http\Request;
 use App\Models\Comment;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\MailSender;
 
 class CommentController extends Controller
 {
@@ -35,7 +37,16 @@ class CommentController extends Controller
             'body' => $request->body,
             'article_id' => $request->article_id,
             'user_id' => auth()->user()->id,
+            'created_at' => date("Y-m-d H:i:s"),
+            'updated_at' => date("Y-m-d H:i:s"),
         ]);
+
+        $comment = new Comment();
+        $comment->body = $request->body;
+        $comment->article_id = $request->article_id;
+        $comment->user_id = auth()->user()->id;
+
+        Mail::to('lugovskihdanil@yandex.ru')->send(new MailSender($comment, $request->body));
 
         return redirect('/articles/comments/' . $request->article_id);
     }
@@ -51,10 +62,13 @@ class CommentController extends Controller
         }
 
         $request->validate([
-            'body' => 'required'
+            'body' => 'required',
         ]);
 
-        DB::table('comments')->where('id', $request->id)->update(["body" => $request->body]);
+        DB::table('comments')->where('id', $request->id)->update([
+            "body" => $request->body,
+            'updated_at' => date('Y-m-d H:i:s'),
+        ]);
 
         return redirect('/articles/comments/' . $comment->article_id);
     }

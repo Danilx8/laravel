@@ -22,10 +22,10 @@ class ArticleController extends Controller
     }
 
     public function create(Request $request) {
-        $this->authorize('create');
+        $this->authorize('create', Article::class);
 
         $request->validate([
-            'name' => 'required|min:3|max:10',
+            'name' => 'required|min:3|max:150',
             'short_text' => 'required|min:5|max:150'
         ]);
 
@@ -42,7 +42,7 @@ class ArticleController extends Controller
     }
 
     public function update(Request $request) {
-        $this->authorize('update');
+        $this->authorize('update', Article::class);
 
         $request->validate([
             'name' => 'required|min:3|max:10',

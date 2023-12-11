@@ -18,7 +18,7 @@ use App\Http\Controllers\CommentController;
 
 Route::get('/', [ArticleController::class, 'index']);
 
-Route::group(['middleware' => 'role:Admin'], function () {
+Route::group(['middleware' => 'role:admin'], function () {
     Route::get('/articles/create', [ArticleController::class, 'createPage']);
     Route::post('/articles/create', [ArticleController::class, 'create']);
     Route::get('/articles/edit/{id}', [ArticleController::class, 'updatePage']);
@@ -29,7 +29,7 @@ Route::group(['middleware' => 'role:Admin'], function () {
 
 Route::get('/articles/comments/{id}', [CommentController::class, 'index']);
 Route::get('/articles/comments/create/{id}', [CommentController::class, 'createIndex']);
-Route::post('/articles/comments/create/{id}', [CommentController::class, 'create']);
+Route::post('/articles/comments/create/', [CommentController::class, 'create']);
 Route::get('/articles/comments/edit/{id}', [CommentController::class, 'editIndex']);
 Route::put('/articles/comments/edit/{id}', [CommentController::class, 'edit']);
 Route::get('/articles/comments/delete/{id}', [CommentController::class, 'deleteIndex']);

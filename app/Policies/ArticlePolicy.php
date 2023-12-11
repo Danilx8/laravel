@@ -15,7 +15,7 @@ class ArticlePolicy
     public function create(User $user): bool
     {
         $admin = Role::where('slug', 'admin')->first();
-        return $user->hasRole($admin);
+        return $user->hasRole('admin');
     }
 
     /**
