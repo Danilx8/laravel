@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Article;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 
 class ArticleController extends Controller
@@ -21,6 +22,8 @@ class ArticleController extends Controller
     }
 
     public function create(Request $request) {
+        $this->authorize('create');
+
         $request->validate([
             'name' => 'required|min:3|max:10',
             'short_text' => 'required|min:5|max:150'
@@ -39,6 +42,8 @@ class ArticleController extends Controller
     }
 
     public function update(Request $request) {
+        $this->authorize('update');
+
         $request->validate([
             'name' => 'required|min:3|max:10',
             'short_text' => 'required|min:5|max:150'
@@ -54,6 +59,8 @@ class ArticleController extends Controller
     }
 
     public function delete(Request $request) {
+        $this->authorize('create');
+
         DB::table('articles')->delete([
             'id' => $request->id
         ]);

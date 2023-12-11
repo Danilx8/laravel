@@ -17,17 +17,29 @@ use App\Http\Controllers\CommentController;
 */
 
 Route::get('/', [ArticleController::class, 'index']);
-Route::get('/articles/create', [ArticleController::class, 'createPage']);
-Route::post('/articles/create', [ArticleController::class, 'create']);
-Route::get('/articles/edit/{id}', [ArticleController::class, 'updatePage']);
-Route::put('/articles/edit/{id}', [ArticleController::class, 'update']);
-Route::get('/articles/delete/{id}', [ArticleController::class, 'deletePage']);
-Route::delete('/articles/delete/{id}', [ArticleController::class, 'delete']);
+
+Route::group(['middleware' => 'role:Admin'], function () {
+    Route::get('/articles/create', [ArticleController::class, 'createPage']);
+    Route::post('/articles/create', [ArticleController::class, 'create']);
+    Route::get('/articles/edit/{id}', [ArticleController::class, 'updatePage']);
+    Route::put('/articles/edit/{id}', [ArticleController::class, 'update']);
+    Route::get('/articles/delete/{id}', [ArticleController::class, 'deletePage']);
+    Route::delete('/articles/delete/{id}', [ArticleController::class, 'delete']);
+});
 
 Route::get('/articles/comments/{id}', [CommentController::class, 'index']);
+Route::get('/articles/comments/create/{id}', [CommentController::class, 'createIndex']);
+Route::post('/articles/comments/create/{id}', [CommentController::class, 'create']);
+Route::get('/articles/comments/edit/{id}', [CommentController::class, 'editIndex']);
+Route::put('/articles/comments/edit/{id}', [CommentController::class, 'edit']);
+Route::get('/articles/comments/delete/{id}', [CommentController::class, 'deleteIndex']);
+Route::delete('/articles/comments/delete/{id}', [CommentController::class, 'delete']);
 
-Route::get('/registration', [AuthController::class, 'create']);
-Route::post('/registration', [AuthController::class, 'registration']);
+Route::get('/register', [AuthController::class, 'registration']);
+Route::post('register', [AuthController::class, 'register']);
+Route::get('/authenticate', [AuthController::class, 'authentication'])->name('login');
+Route::post('/authenticate', [AuthController::class, 'authenticate']);
+Route::get('/logout', [AuthController::class, 'logout']);
 
 Route::get('/about', function() {
     return view('main.about');

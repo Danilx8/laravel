@@ -10,10 +10,20 @@
     <header>
         <a class="home" href="/">Главная</a>
         <nav class="nav-top">
-            <a href="/registration">Регистрация</a>
             <a href="/contacts">Контакты</a>
             <a href="/about">О нас</a>
+            @guest
+                <a href="/authenticate">Войти</a>
+                <a href="/register">Зарегистрироваться</a>
+            @endguest
+            @auth
+                <a href="/logout">Выйти</a>
+                Добро пожаловать, {{auth()->user()->name}}
+            @endauth
         </nav>
+        <div clas="inline">
+
+        </div>
     </header>
     @yield('content')
     <footer>

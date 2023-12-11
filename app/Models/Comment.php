@@ -12,4 +12,8 @@ class Comment extends Model
     public function article() {
         return $this->belongsTo(Article::class);
     }
+
+    public function author() {
+        return $this->belongsTo(User::class);
+    }
 }

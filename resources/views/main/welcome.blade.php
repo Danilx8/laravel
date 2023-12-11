@@ -2,7 +2,9 @@
 @section('content')
 <div class="container">
     <h1>Lorem ipsum dolor sit amet.</h1>
-    <a href="/articles/create">Создать новую статью</a>
+    @role('admin')
+        <a href="/articles/create">Создать новую статью</a>
+    @endrole
     @foreach ($articles as $article)
         <div>
             <h3>{{$article->name}}</h3>
@@ -11,8 +13,10 @@
                 <img src={{$article['preview_image']}} alt="">
             </a> --}}
             <small>{{$article->data_create}}</small>
-            <a id="edit" href={{"/articles/edit/" . $article->id}}>Edit</a>
-            <a id="delete" href={{"/articles/delete/" . $article->id}}>Delete</a>
+            @role('admin')
+                <a id="edit" href={{"/articles/edit/" . $article->id}}>Edit</a>
+                <a id="delete" href={{"/articles/delete/" . $article->id}}>Delete</a>
+            @endrole
             <a id="comments" href={{"/articles/comments/" . $article->id}}>Comments</a>
         </div>
     @endforeach
