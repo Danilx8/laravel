@@ -8,31 +8,25 @@ header {
     padding: 10px;
 }
 
-nav {
-    text-align: right;
-    display: inline;
-}
-
-nav a {
+nav-top {
+    text-align:right;
     color: #fff;
     text-decoration: none;
     margin: 0 15px;
 }
 
-nav a:hover {
-    text-decoration: underline;
+nav {
+    text-align: right;
+    color: black;
 }
 
-.home {
-    font-size: 25px;
-    background-color: #333;
+header nav a {
     color: #fff;
-    padding: 10px;
     text-decoration: none;
-    display: inline;
+    margin: 0 15px;
 }
 
-.home:hover {
+header nav a:hover {
     text-decoration: underline;
 }
 
@@ -48,3 +42,4 @@ footer {
     text-align: center;
     padding: 10px;
 }
+
