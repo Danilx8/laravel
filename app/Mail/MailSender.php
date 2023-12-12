@@ -19,7 +19,7 @@ class MailSender extends Mailable
     /**
      * Create a new message instance.
      */
-    public function __construct(Comment $comment)
+    public function __construct(string $comment)
     {
         $this->comment = $comment;
     }

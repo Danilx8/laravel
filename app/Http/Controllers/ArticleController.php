@@ -59,7 +59,7 @@ class ArticleController extends Controller
     }
 
     public function delete(Request $request) {
-        $this->authorize('create');
+        $this->authorize('delete', Article::class);
 
         DB::table('articles')->delete([
             'id' => $request->id
