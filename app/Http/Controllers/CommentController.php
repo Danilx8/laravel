@@ -15,6 +15,9 @@ use App\Jobs\VeryLongJob;
 class CommentController extends Controller
 {
     public function index($article_id) {
+        if (isset($_GET['notify']))
+            auth()->user()->notifications->where('id', $_GET['notify'])->first()->markAsRead();
+
         return view('comments.current')
             ->with('comments', DB::table('comments')->where('article_id', $article_id)->orderBy('created_at', 'desc')->get())
             ->with('article_id', $article_id);

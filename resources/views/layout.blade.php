@@ -17,8 +17,22 @@
                 <a href="/register">Зарегистрироваться</a>
             @endguest
             @auth
+                <div class="greet">
+                    Добро пожаловать, {{auth()->user()->name}}
+                </div>
                 <a href="/logout">Выйти</a>
-                Добро пожаловать, {{auth()->user()->name}}
+                <li>
+                    <a href="#" role="button" data-toggle="dropdown" aria-expanded="false">
+                        New articles: {{auth()->user()->unreadNotifications->count()}}
+                    </a>
+                    <div class="dropdown-menu">
+                        @foreach (auth()->user()->unreadNotifications as $notification)
+                            <a class="dropdown-item" href="/articles/comments/{{$notification->data['article']['id']}}?notify={{$notification->id}}">
+                                {{$notification->data['article']['name']}}
+                            </a>
+                        @endforeach
+                    </div>
+                </li>
             @endauth
         </nav>
         <div clas="inline">

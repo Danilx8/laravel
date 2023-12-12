@@ -6,6 +6,9 @@ use App\Models\Article;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
+use App\Notifications\ArticleNotifier;
+use Illuminate\Support\Facades\Notification;
+use App\Models\User;
 
 class ArticleController extends Controller
 {
@@ -33,6 +36,21 @@ class ArticleController extends Controller
             'name' => $request->name,
             'short_text' => $request->short_text,
         ]);
+
+        $article = new Article;
+        $article->name = $request->name;
+        $article->short_text = $request->short_text;
+        $article->created_at = date("Y-m-d H:i:s");
+        $article->updated_at = date("Y-m-d H:i:s");
+        $article->data_create = date("Y-m-d H:i:s");
+        $article->save();
+
+        $users = User::all();
+        foreach($users as $user){
+            if ($user->id != auth()->user()->id) {
+                Notification::send($user, new ArticleNotifier($article));
+            }
+        }
 
         return redirect('/');
     }
