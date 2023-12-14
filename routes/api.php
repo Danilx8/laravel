@@ -17,19 +17,19 @@ use App\Http\Controllers\API\CommentController;
 |
 */
 
-Route::get('/', [ArticleController::class, 'retrieve']);
-Route::get('/articles/comments/{id}', [CommentController::class, 'retrieve'])->middleware('path');
+Route::get('/articles/', [ArticleController::class, 'retrieve']);
 
 Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::post('/articles/create', [ArticleController::class, 'create']);
     Route::put('/articles/edit/{id}', [ArticleController::class, 'update']);
     Route::delete('/articles/delete/{id}', [ArticleController::class, 'delete']);
-
-    Route::post('/articles/comments/create/', [CommentController::class, 'create']);
-    Route::put('/articles/comments/edit/{id}', [CommentController::class, 'update']);
-    Route::delete('/articles/comments/delete/{id}', [CommentController::class, 'delete']);
-    Route::get('/logout', [AuthController::class, 'logout']);
 });
 
-Route::post('/register', [AuthController::class, 'register']);
+Route::get('/articles/comments/{id}', [CommentController::class, 'retrieve'])->middleware('path');
+Route::post('/articles/comments/create/', [CommentController::class, 'create']);
+Route::put('/articles/comments/edit/{id}', [CommentController::class, 'update']);
+Route::delete('/articles/comments/delete/{id}', [CommentController::class, 'delete']);
+
+Route::post('register', [AuthController::class, 'register']);
 Route::post('/authenticate', [AuthController::class, 'authenticate']);
+Route::get('/logout', [AuthController::class, 'logout']);
