@@ -47,7 +47,7 @@ class ArticleController extends Controller
         $isSaved =  $article->save();
 
         if($isSaved) {
-            NewArticleEvent::dispatch($article);
+            NewArticleEvent::dispatch($article->name);
             $keys = DB::table('cache')->where('key', 'regexp', 'laravel_cache_articles:*[0-9]')->get();
             foreach ($keys as $key){
                Cache::forget($key->key);
