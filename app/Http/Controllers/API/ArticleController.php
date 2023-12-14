@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\API;
 
 use App\Models\Article;
 use Illuminate\Support\Facades\DB;
@@ -11,23 +11,18 @@ use Illuminate\Support\Facades\Notification;
 use App\Models\User;
 use App\Events\NewArticleEvent;
 use Illuminate\Support\Facades\Cache;
+use App\Http\Controllers\Controller;
 
 class ArticleController extends Controller
 {
-    public function index() {
+    public function retrieve() {
         $articles = DB::table('articles')->orderBy('data_create', 'desc')->simplePaginate(5);
         $currentPage = request('page') ? request('page'): 1;
         Cache::put('articles'.$currentPage, $articles, 3000);
 
-        return view('main.welcome')->with('articles', $articles);
-    }
-
-    // public function gallery($url) {
-    //     return view('main.gallery')->with('picture', "/" . $url);
-    // }
-
-    public function createPage() {
-        return view('main.createArticle');
+        return response()->json([
+            'articles' => $articles
+        ]);
     }
 
     public function create(Request $request) {
@@ -52,7 +47,7 @@ class ArticleController extends Controller
         $isSaved =  $article->save();
 
         if($isSaved) {
-            NewArticleEvent::dispatch($request->short_text);
+            NewArticleEvent::dispatch($article);
             $keys = DB::table('cache')->where('key', 'regexp', 'laravel_cache_articles:*[0-9]')->get();
             foreach ($keys as $key){
                Cache::forget($key->key);
@@ -66,11 +61,7 @@ class ArticleController extends Controller
             }
         }
 
-        return redirect('/');
-    }
-
-    public function updatePage($id) {
-        return view('main.updateArticle')->with('article', DB::table('articles')->where('id', $id)->first());
+        return response($isSaved);
     }
 
     public function update(Request $request) {
@@ -81,22 +72,20 @@ class ArticleController extends Controller
             'short_text' => 'required|min:5|max:150'
         ]);
 
-        DB::table('articles')->where('id', $request->id)->update(['name' => $request->name, 'short_text' => $request->short_text]);
+        $isUpdated = DB::table('articles')->where('id', $request->id)->update(['name' => $request->name, 'short_text' => $request->short_text]);
         Cache::flush();
-        return redirect('/');
-    }
 
-    public function deletePage($id) {
-        return view('main.deleteArticle')->with('article', DB::table('articles')->where('id', $id)->first());
+        return response($isUpdated);
     }
 
     public function delete(Request $request) {
         $this->authorize('delete', Article::class);
 
-        DB::table('articles')->delete([
+        $isDeleted = DB::table('articles')->delete([
             'id' => $request->id
         ]);
         Cache::flush();
-        return redirect('/');
+
+        return response($isDeleted);
     }
 }

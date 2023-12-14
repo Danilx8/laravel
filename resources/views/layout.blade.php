@@ -46,7 +46,6 @@
     <footer>
         <p>Луговских Данил Викторович 221-323</p>
     </footer>
+    <script src="{{ mix('js/app.js') }}"></script>
 </body>
 </html>
-
-<script src="{{ mix('js/app.js') }}"></script>

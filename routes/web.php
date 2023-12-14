@@ -27,7 +27,7 @@ Route::group(['middleware' => 'role:admin'], function () {
     Route::delete('/articles/delete/{id}', [ArticleController::class, 'delete']);
 });
 
-Route::get('/articles/comments/{id}', [CommentController::class, 'index']);
+Route::get('/articles/comments/{id}', [CommentController::class, 'index'])->middleware('path');
 Route::get('/articles/comments/create/{id}', [CommentController::class, 'createIndex']);
 Route::post('/articles/comments/create/', [CommentController::class, 'create']);
 Route::get('/articles/comments/edit/{id}', [CommentController::class, 'editIndex']);

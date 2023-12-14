@@ -5,26 +5,25 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
+use App\Models\Path;
 
-class RoleMiddleware
+class PathMiddleware
 {
     /**
      * Handle an incoming request.
      *
      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
-    public function handle($request, Closure $next, $role, $permission = null)
+    public function handle(Request $request, Closure $next): Response
     {
-        if(!auth()->user()) {
-            abort(404);
+        $urls = Path::all();
+        foreach($urls as $url){
+            if ($url->url === $request->path()) return $next($request);
         }
 
-        if(!auth()->user()->hasRole($role)) {
-            abort(404);
-        }
-        if($permission !== null && !auth()->user()->can($permission)) {
-            abort(404);
-        }
+        $path = new Path;
+        $path->url = $request->path();
+        $path->save();
         return $next($request);
     }
 }

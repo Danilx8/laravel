@@ -8,20 +8,17 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
-use App\Models\Comment;
 
-class MailSender extends Mailable
+class ArticleMailStats extends Mailable
 {
     use Queueable, SerializesModels;
 
-    protected $comment;
-
-    /**
-     * Create a new message instance.
-     */
-    public function __construct(string $comment)
+    protected $articleCount;
+    protected $commentCount;
+    public function __construct(int $articleCount, int $commentCount)
     {
-        $this->comment = $comment;
+        $this->articleCount = $articleCount;
+        $this->commentCount = $commentCount;
     }
 
     /**
@@ -32,9 +29,10 @@ class MailSender extends Mailable
     public function build()
     {
         return $this->from(env('MAIL_FROM_ADDRESS'))
-                    ->view('mail.comment')
+                    ->view('mail.stats')
                     ->with([
-                        'comment' => $this->comment
+                        'articleCount' => $this->articleCount,
+                        'commentCount' => $this->commentCount,
                     ]);
     }
 }
